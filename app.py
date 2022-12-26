@@ -110,7 +110,8 @@ def crud_Customers(id=-1):
        Name = request_data['Name']
        City = request_data['City']
        Age = request_data['Age']
-       newperson = Customers(Name,City,Age)
+       active = False
+       newperson = Customers(Name,City,Age,active)
        db.session.add(newperson)
        db.session.commit()
        return []
