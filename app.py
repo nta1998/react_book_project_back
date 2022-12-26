@@ -19,12 +19,14 @@ class Books(db.Model):
     Author = db.Column(db.String(35))
     Year_Published = db.Column(db.Date)
     Type = db.Column(db.Integer)
+    active = db.Column(db.Boolean)
     book_Loan = db.relationship("Loans", backref="book_loaner")
-    def __init__(self, Name, Author, Year_Published, Type):
+    def __init__(self, Name, Author, Year_Published, Type, active):
         self.Name = Name
         self.Author = Author
         self.Year_Published = Year_Published
         self.Type = Type
+        self.active = active
 
 class Customers(db.Model):
   
@@ -32,12 +34,14 @@ class Customers(db.Model):
     Name = db.Column(db.String(35))
     City = db.Column(db.String(35))
     Age = db.Column(db.Integer)
+    active = db.Column(db.Boolean)
 
     book_Loans = db.relationship("Loans",backref='customers')
-    def __init__(self, Name, City, Age):
+    def __init__(self, Name, City, Age,active):
         self.Name = Name
         self.City = City
         self.Age = Age
+        self.active = active
 
 class Loans(db.Model):
 
@@ -63,7 +67,7 @@ def crud_Books(id=-1):
     if request.method == "GET":
         all_books=[]
         for book in Books.query.all():
-            all_books.append({'id':book.id,'Name':book.Name,'Author':book.Author,'Year_Published' : f'{book.Year_Published}', "Type":book.Type})
+            all_books.append({'id':book.id,'Name':book.Name,'Author':book.Author,'Year_Published' : f'{book.Year_Published}', "Type":book.Type, "active":book.active})
         return (json.dumps(all_books))
     if request.method == "POST":
        request_data = request.get_json()
@@ -72,7 +76,8 @@ def crud_Books(id=-1):
        print(request_data['Year_Published'])
        Year_Published = datetime.strptime(request_data['Year_Published'],'%Y-%m-%d').date()
        Type = request_data['Type']
-       newperson = Books(Name,Author,Year_Published,Type)
+       active = False
+       newperson = Books(Name,Author,Year_Published,Type,active)
        db.session.add(newperson)
        db.session.commit()
        return []
@@ -98,7 +103,7 @@ def crud_Customers(id=-1):
     if request.method == "GET":
         all_customers=[]
         for customer in Customers.query.all():
-            all_customers.append({'id':customer.id,'Name':customer.Name,'City':customer.City,'Age':customer.Age})
+            all_customers.append({'id':customer.id,'Name':customer.Name,'City':customer.City,'Age':customer.Age,"active":customer.active})
         return (json.dumps(all_customers))
     if request.method == "POST":
        request_data = request.get_json()
