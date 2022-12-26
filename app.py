@@ -95,7 +95,14 @@ def crud_Books(id=-1):
         the_put_book.Type = request_data['Type']
         db.session.commit()
         return{}
-
+@app.route('/Books/active/<id>',methods=['DELETE','PUT'])
+def active_crod(id):
+    if request.method == "PUT":
+        the_loans_del=Books.query.get(id)
+        request_data = request.get_json()
+        the_loans_del.active = request_data['active']
+        db.session.commit()
+        return{}
 @app.route('/Customers',methods=['GET'])
 @app.route('/Customers/add',methods=['POST'])
 @app.route('/Customers/change/<id>',methods=['DELETE','PUT'])
@@ -128,6 +135,15 @@ def crud_Customers(id=-1):
         the_customer_del.Age = request_data['Age']
         db.session.commit()
         return{}
+@app.route('/Customers/active/<id>',methods=['DELETE','PUT'])
+def active_crod(id):
+    if request.method == "PUT":
+        the_loans_del=Customers.query.get(id)
+        request_data = request.get_json()
+        the_loans_del.active = request_data['active']
+        db.session.commit()
+        return{}
+        
 @app.route('/Loans',methods=['GET'])
 @app.route('/Loans/add',methods=['POST'])
 @app.route('/Loans/change/<id>',methods=['DELETE','PUT'])
