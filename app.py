@@ -96,7 +96,7 @@ def crud_Books(id=-1):
         db.session.commit()
         return{}
 @app.route('/Books/active/<id>',methods=['DELETE','PUT'])
-def active_crod(id):
+def active_book_crod(id):
     if request.method == "PUT":
         the_loans_del=Books.query.get(id)
         request_data = request.get_json()
@@ -136,7 +136,7 @@ def crud_Customers(id=-1):
         db.session.commit()
         return{}
 @app.route('/Customers/active/<id>',methods=['DELETE','PUT'])
-def active_crod(id):
+def active_Customers_crod(id):
     if request.method == "PUT":
         the_loans_del=Customers.query.get(id)
         request_data = request.get_json()
